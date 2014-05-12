@@ -33,20 +33,98 @@ void Application::render(void)
 
 	//render grid
 	Image img( 400, 300);
-	/*
-	for(unsigned int x = 0; x < img.width; x++)
-		for(unsigned int y = 0; y < img.height; y++)
-		{
-			if( x % 100 == 0 || y % 100 == 0 )
-				img.setPixel(x,y, Color::WHITE );
-			else if( x % 25 == 0 || y % 25 == 0 )
-				img.setPixel(x,y, Color::GRAY);
+
+	/*---- LINIA----*/
+
+	int x0, y0, x1, y1; //punts d'inici i final de la linia 
+
+	x0 = 150;
+	y0 = 150;
+	x1 = 200;
+	y1 = 150;
+
+	int dx = abs(x1 - x0);
+	int dy = abs(y1 - y0);
+	int x, y;
+
+	//slope |m| <= 1.0;
+	if (dx >= dy){
+		int d = 2 * dy - dx;
+		int ds = 2 * dy;
+		int dt = 2 * (dy - dx);
+
+		if (x0 < x1)  { // set the left point to the starting point
+			x = x0;
+			y = y0;
 		}
-	*/
-	int R = 20;
-	int xc = 100;
+		else { // exchange the right point to the starting point and left point to the end point
+			x = x1;
+			y = y1;
+			x1 = x0;
+			y1 = y0;
+		}
+		img.setPixel(x, y, Color::RED); // activate the starting point
+		while (x < x1) {
+			if (d < 0)
+				d += ds;
+			else {
+				if (y < y1) {
+					y++;
+					d += dt;
+				}
+				else {
+					y--;
+					d += dt;
+				}
+			}
+			x++;
+			img.setPixel(x, y, Color::RED);
+		}
+	}
+	else {
+
+
+		//slope |m| > 1.0;
+		int d = 2 * dx - dy;
+		int ds = 2 * dx;
+		int dt = 2 * (dx - dy);
+		if (y0 < y1) { // set the left point to the starting point
+			x = x0;
+			y = y0;
+		}
+		else { // exchange the right point to the starting point and left point to the end point
+			x = x1;
+			y = y1;
+			y1 = y0;
+			x1 = x0;
+		}
+		img.setPixel(x, y, Color::RED); // activate the starting point
+		while (y < y1) {
+			if (d < 0)
+				d += ds;
+			else {
+				if (x > x1){
+					x--;
+					d += dt;
+				}
+				else {
+					x++;
+					d += dt;
+				}
+			}
+			y++;
+			img.setPixel(x, y, Color::RED);
+		}
+	}
+
+
+	/*---- CERCLE----*/
+	int R = 20; //radi
+	//centre del cercle
+	int xc = 100; 
 	int yc = 100;
-	int x = 0, y = R;
+	x = 0;
+	y = R;
 	int d = 1 - R;
 
 	img.setPixel(xc, yc, Color::BLUE);
