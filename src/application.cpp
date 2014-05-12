@@ -33,6 +33,7 @@ void Application::render(void)
 
 	//render grid
 	Image img( 400, 300);
+	/*
 	for(unsigned int x = 0; x < img.width; x++)
 		for(unsigned int y = 0; y < img.height; y++)
 		{
@@ -41,6 +42,38 @@ void Application::render(void)
 			else if( x % 25 == 0 || y % 25 == 0 )
 				img.setPixel(x,y, Color::GRAY);
 		}
+	*/
+	int R = 20;
+	int xc = 100;
+	int yc = 100;
+	int x = 0, y = R;
+	int d = 1 - R;
+
+	img.setPixel(xc, yc, Color::BLUE);
+
+	while (x<y)
+	{
+		if (d<0)
+			d += 2 * x + 2;
+		else
+		{
+			d += 2 * (x - y) + 5;
+			y--;
+		}
+		x++;
+
+		img.setPixel(xc + x, yc + y, Color::BLUE);
+		img.setPixel(xc - x, yc + y, Color::BLUE);
+		img.setPixel(xc - x, yc - y, Color::BLUE);
+		img.setPixel(xc + x, yc - y, Color::BLUE);
+		img.setPixel(xc + y, yc + x, Color::BLUE);
+		img.setPixel(xc - y, yc + x, Color::BLUE);
+		img.setPixel(xc - y, yc - x, Color::BLUE);
+		img.setPixel(xc + y, yc - x, Color::BLUE);
+
+	}
+	
+
 
 	img.scale( this->window_width, this->window_height );
 
